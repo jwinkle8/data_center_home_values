@@ -111,7 +111,8 @@ for axis in (path_axis, gap_axis):
     for side in ("left", "bottom"):
         axis.spines[side].set_color(BASELINE)
 gap_axis.set_xticks(range(-EVENT_WINDOW_MONTHS, EVENT_WINDOW_MONTHS + 1, 6))
-plt.savefig('infographic_charts.png', transparent=True) 
+img_dir = Path('img')
+plt.savefig(img_dir / 'infographic_charts.png', transparent=True) 
 
 HORIZONS_MONTHS = [3, 6, 12]
 
