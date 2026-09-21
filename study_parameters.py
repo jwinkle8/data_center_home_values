@@ -10,4 +10,4 @@ EVENT_WINDOW_MONTHS = 24
 
 # Set whether to examine the impact of the first headline about data center 
 # construction or the opening of the first data center in affected zip codes on home values
-EVENT_OF_INTEREST = EventOfInterest.FIRST_OPERATIONAL
+EVENT_OF_INTEREST = EventOfInterest.FIRST_HEADLINE
