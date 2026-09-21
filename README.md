@@ -4,6 +4,10 @@
 
 The purpose of this project is to apply data science skills to tell a compelling, data-driven story about the effect of data centers on the estimated values of nearby homes.
 
+![Data Center/Home Value Study Results](img/infographic_charts.png "The Effect of Data Center Construction On Nearby Home Values")
+
+## Reproducibility
+
 ## Attribution
 
 Data center locations were sourced from [Epoch AI's Frontier Data Centers Hub](https://epoch.ai/data/ai-data-centers).
