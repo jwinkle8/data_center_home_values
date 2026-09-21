@@ -4,7 +4,7 @@
 
 The purpose of this project is to apply data science skills to tell a compelling, data-driven story about the effect of data centers on the estimated values of nearby homes.
 
-![Data Center/Home Value Study Results](img/infographic_charts.png "The Effect of Data Center Construction On Nearby Home Values")
+![Data Center/Home Value Study Results](img/infographic_charts_with_background.png "The Effect of Data Center Construction On Nearby Home Values")
 
 ## Reproducibility
 
