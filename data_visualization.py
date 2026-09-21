@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import textwrap
 
-from event_of_interest import EventOfInterest
+from study_parameters import EventOfInterest
 from pathlib import Path
 
 
@@ -112,7 +112,8 @@ for axis in (path_axis, gap_axis):
         axis.spines[side].set_color(BASELINE)
 gap_axis.set_xticks(range(-EVENT_WINDOW_MONTHS, EVENT_WINDOW_MONTHS + 1, 6))
 img_dir = Path('img')
-plt.savefig(img_dir / 'infographic_charts.png', transparent=True) 
+plt.savefig(img_dir / 'infographic_charts.png', transparent=True)
+plt.savefig(img_dir / 'infographic_charts_with_background.png') 
 
 HORIZONS_MONTHS = [3, 6, 12]
 
