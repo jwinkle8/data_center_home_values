@@ -3,11 +3,8 @@ import numpy as np
 import pandas as pd
 import textwrap
 
-from study_parameters import EventOfInterest
+from study_parameters import EventOfInterest, EVENT_WINDOW_MONTHS, EVENT_OF_INTEREST
 from pathlib import Path
-
-
-EVENT_OF_INTEREST = EventOfInterest.FIRST_OPERATIONAL
 
 data_dir = Path("data")
 
@@ -66,8 +63,6 @@ fig, (path_axis, gap_axis) = plt.subplots(
     2, 1, figsize=(10, 8), sharex=True, gridspec_kw={"height_ratios": [3, 2], "hspace": 0.12}
 )
 event_time = event_study.index
-
-EVENT_WINDOW_MONTHS = 24
 
 # Top: the average treated zip's path against its matched controls, both indexed to 0 at
 # the anchor month.
