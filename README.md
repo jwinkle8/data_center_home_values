@@ -1,20 +1,45 @@
-# aipi510-proj1
+# The Impact of Data Center Construction on Nearby Home Values
 
-## Overview 
+**Author: Justin Winkler**
+
+**Date: September 25, 2026**
 
 The purpose of this project is to apply data science skills to tell a compelling, data-driven story about the effect of data centers on the estimated values of nearby homes.
 
-![Data Center/Home Value Study Results](img/infographic_charts_with_background.png "The Effect of Data Center Construction On Nearby Home Values")
+<p align="center">
+  <img src="img/infographic_charts_with_background.png" width="60%">
+</p>
 
 ## Reproducibility
 
-## Attribution
+Pre-requisites: Python (v3.10 or greater)
 
-Data center locations were sourced from [Epoch AI's Frontier Data Centers Hub](https://epoch.ai/data/ai-data-centers).
+To reproduce the analysis that generated the graph above, follow these steps:
 
-Home estimates were sourced from the [Zillow Home Value Index](https://www.zillow.com/research/data/).
+1. Clone the repository:
+    ```bash
+    git clone https://github.com/jwinkle8/aipi510-proj1.git
+    ```
+2. Create a virtual environment and install project dependencies:
+    ```bash
+    python -m venv .venv
+    source .venv/bin/activate
+    python -m pip install -r requirements.txt
+    ```
+3. (Optional) If you wish run the analysis on the latest verions of these datasets, download them from the sources listed in the [citation section](#citation), otherwise use the cached datasets in the `data/raw` directory.
+4. Define your desired study parameters in `study_parameters.py`:
 
-### Citation
+    | Parameter | Description | Default |
+    |-----------|-------------|---------|
+    | `EVENT_OF_INTEREST` | Determines whether to examine the impact of the first headline about data center construction or the opening of the first data center in affected zip codes on home values. | `EventOfInterest.FIRST_HEADLINE` |
+    | `EVENT_WINDOW_MONTHS` | Set the duration (in months) over which to look forward and backward at the impact of data center construction on nearby housing estimates. | `24` |
+5. Open the EDA notebook `exploratory_data_analysis.ipynb` in a Jupyter Notebook editor/viewer and run all cells.
+6. Generate the data visualization:
+    ```bash
+    python data_visualization.py
+    ```
+
+## Citation
 
 Epoch AI, ‘AI Data Centers’. Published online at epoch.ai. Retrieved from 'https://epoch.ai/data/ai-data-centers/data_centers.zip' [online resource].
 
