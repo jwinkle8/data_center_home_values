@@ -38,6 +38,17 @@ To reproduce the analysis that generated the graph above, follow these steps:
     ```bash
     python data_visualization.py
     ```
+7. View the output of the analysis in the `study_visualizations` directory.
+
+## Disclosure of the use of generative AI
+
+Parts of this project were created with the help generative AI tools, particularly Claude Code, powered primarily by the by the Opus 5 model. My primary uses of generative AI tools involved:
+
+- advanced manipulation of DataFrames and customization of data visualization
+- consultation about an effective choice for my study's design for the data I had collected and the concerns I raised about naive approaches
+- generation of a background for my infographic
+
+All uses of AI were preceded by a best-effort attempt and were specifically prompted by asking to build off of the work I had previously completed.
 
 ## Citation
 
