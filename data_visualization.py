@@ -77,10 +77,6 @@ path_axis.plot(event_time, log_to_pct(event_study["Control"]), color=CONTROL_COL
 event_string = 'data center opened' if EVENT_OF_INTEREST == EventOfInterest.FIRST_OPERATIONAL else 'first data center construction headline'
 path_axis.set_ylabel(textwrap.fill(f"Home value change since {event_string} (%)", width=25), color=INK, fontweight='bold', fontsize=15)
 path_axis.legend(frameon=False, loc="upper left")
-# path_axis.set_title(
-#     f"Home values around data center events ({EVENT_OF_INTEREST.name.replace('_', ' ').lower()})",
-#     loc="left", color=INK, fontsize=12,
-# )
 
 # Bottom: the treated-minus-control gap with its 95% confidence interval. The pre-period should
 # hug zero; that is the parallel-trends check.
@@ -111,8 +107,12 @@ for axis in (path_axis, gap_axis):
     for side in ("left", "bottom"):
         axis.spines[side].set_color(BASELINE)
 gap_axis.set_xticks(range(-EVENT_WINDOW_MONTHS, EVENT_WINDOW_MONTHS + 1, 6))
-img_dir = Path('img')
+img_dir = Path('study_visualizations')
 plt.savefig(img_dir / 'infographic_charts.png', transparent=True)
+path_axis.set_title(
+    textwrap.fill(f"Home values around data center events ({EVENT_OF_INTEREST.name.replace('_', ' ').lower()})", width=35),
+    loc="center", color=INK, fontsize=24, fontweight='bold',
+)
 plt.savefig(img_dir / 'infographic_charts_with_background.png') 
 
 HORIZONS_MONTHS = [3, 6, 12]
