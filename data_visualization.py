@@ -6,11 +6,16 @@ import textwrap
 from study_parameters import EventOfInterest, EVENT_WINDOW_MONTHS, EVENT_OF_INTEREST
 from pathlib import Path
 
-data_dir = Path("data")
+EOI_PREFIX = "operational_" if EVENT_OF_INTEREST == EventOfInterest.FIRST_OPERATIONAL else "headline_"
 
-clean_data_prefix = "operational_" if EVENT_OF_INTEREST == EventOfInterest.FIRST_OPERATIONAL else "headline_"
-treated_panel = pd.read_csv(data_dir / "final"  / (clean_data_prefix + "treated_zipcode_value_estimates.csv"))
-control_panel = pd.read_csv(data_dir / "final"  / (clean_data_prefix + "control_zipcode_value_estimates.csv"))
+# Load analyzed data
+data_dir = Path("data")
+treated_panel = pd.read_csv(data_dir / "final"  / (EOI_PREFIX + "treated_zipcode_value_estimates.csv"))
+control_panel = pd.read_csv(data_dir / "final"  / (EOI_PREFIX + "control_zipcode_value_estimates.csv"))
+
+# DISCLAIMER: The following section was created with help from Claude Code's Opus 5 model.
+
+# -------------------------- CREATED WITH HELP FROM CLAUDE CODE --------------------------
 
 # Join each treated zip's own path to its synthetic control path and take the difference.
 # Gap is the treated zip's log appreciation since the anchor, net of what its matched donors
@@ -26,8 +31,6 @@ gap_panel["Gap"] = gap_panel["Treated"] - gap_panel["Control"]
 assert len(gap_panel) == len(treated_panel), "treated and control panels do not line up"
 assert np.allclose(gap_panel.loc[gap_panel["EventTime"] == 0, "Gap"], 0)
 assert gap_panel["Gap"].notna().all()
-
-print(gap_panel.head(10).to_string(index=False))
 
 N_BOOTSTRAP = 500
 RANDOM_SEED = 510
@@ -49,8 +52,6 @@ for draw in range(N_BOOTSTRAP):
     bootstrap_means[draw] = np.nanmean(gap_by_zip.to_numpy()[sample], axis=0)
 event_study["GapLower"] = np.nanpercentile(bootstrap_means, 2.5, axis=0)
 event_study["GapUpper"] = np.nanpercentile(bootstrap_means, 97.5, axis=0)
-
-print(event_study.loc[[-24, -12, 0, 6, 12, 24]].round(4).to_string())
 
 def log_to_pct(log_change):
     return 100 * (np.exp(log_change) - 1)
@@ -85,13 +86,6 @@ gap_axis.set_ylabel(textwrap.fill("Home value gap (percentage points)", width=25
 event_string = 'data center opening' if EVENT_OF_INTEREST == EventOfInterest.FIRST_OPERATIONAL else 'first data center construction headline'
 gap_axis.set_xlabel(f"Months relative to {event_string}", color=INK, fontweight='bold', fontsize=15)
 gap_axis.legend(frameon=False, loc="lower left")
-# Treated zips observed at each point; the count falls off after the anchor as recent events
-# run out of data.
-for month in range(-EVENT_WINDOW_MONTHS, EVENT_WINDOW_MONTHS + 1, 6):
-    gap_axis.annotate(
-        f"n={event_study.loc[month, 'N']}", (month, 1), xytext=(0, -4), textcoords="offset points",
-        xycoords=("data", "axes fraction"), ha="center", va="top", fontsize=8, color=MUTED,
-    )
 
 for axis in (path_axis, gap_axis):
     axis.axvline(0, color=BASELINE, linewidth=1)
@@ -102,21 +96,40 @@ for axis in (path_axis, gap_axis):
     for side in ("left", "bottom"):
         axis.spines[side].set_color(BASELINE)
 gap_axis.set_xticks(range(-EVENT_WINDOW_MONTHS, EVENT_WINDOW_MONTHS + 1, 6))
+
+# Treated zips observed at each point; the count falls off after the anchor as recent events
+# run out of data.
+for month in range(-EVENT_WINDOW_MONTHS, EVENT_WINDOW_MONTHS + 1, 6):
+    gap_axis.annotate(
+        f"n={event_study.loc[month, 'N']}", (month, 1), xytext=(0, -4), textcoords="offset points",
+        xycoords=("data", "axes fraction"), ha="center", va="top", fontsize=10, color=MUTED,
+    )
+
+# -------------------------- CREATED WITH HELP FROM CLAUDE CODE --------------------------
+
+# Add a note explaining the meaning of n based on feedback that it was unclear
+path_axis.annotate(
+    textwrap.fill("n, the number of zips with data centers at each event, dwindles as more recent data " \
+    "center zips run out of value data prior to analysis.", 25),
+    xy=(0.86, 0.01),
+    xytext=(0.80, 0.32),
+    xycoords="axes fraction",
+    textcoords="axes fraction",
+    arrowprops=dict(
+        facecolor=INK,
+        arrowstyle="->"
+    ),
+    fontsize=10,
+    color=INK
+)
+
+
+
+# Save the data visualization
 img_dir = Path('study_visualizations')
-plt.savefig(img_dir / 'infographic_charts.png', transparent=True)
+plt.savefig(img_dir / (EOI_PREFIX + 'infographic_charts.png'), transparent=True, bbox_inches="tight")
 path_axis.set_title(
     textwrap.fill(f"Home values around data center events ({EVENT_OF_INTEREST.name.replace('_', ' ').lower()})", width=35),
     loc="center", color=INK, fontsize=24, fontweight='bold',
 )
-plt.savefig(img_dir / 'infographic_charts_with_background.png') 
-
-HORIZONS_MONTHS = [3, 6, 12]
-
-# The headline numbers: the gap at each fixed horizon after the anchor, in percent, with
-# its interval and the number of treated zips observed that far out.
-horizon_estimates = event_study.loc[HORIZONS_MONTHS, ["N", "Gap", "GapLower", "GapUpper"]].copy()
-for column in ["Gap", "GapLower", "GapUpper"]:
-    horizon_estimates[f"{column}Pct"] = log_to_pct(horizon_estimates.pop(column))
-horizon_estimates.index.name = "MonthsAfterAnchor"
-
-print(horizon_estimates.round(2).to_string())
+plt.savefig(img_dir / (EOI_PREFIX + 'charts_with_background.png'))
