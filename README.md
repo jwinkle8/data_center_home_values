@@ -7,7 +7,7 @@
 The purpose of this project is to apply data science skills to tell a compelling, data-driven story about the effect of data centers on the estimated values of nearby homes.
 
 <p align="center">
-  <img src="study_visualizations/infographic_charts_with_background.png" width="60%">
+  <img src="study_visualizations/operational_infographic_charts_with_background.png" width="60%">
 </p>
 
 ## Reproducibility
