@@ -126,10 +126,10 @@ path_axis.annotate(
 
 
 # Save the data visualization
-img_dir = Path('study_visualizations')
-plt.savefig(img_dir / (EOI_PREFIX + 'infographic_charts.png'), transparent=True, bbox_inches="tight")
+viz_dir = Path('study_visualizations')
+plt.savefig(viz_dir / "charts" / (EOI_PREFIX + 'infographic_charts.png'), transparent=True, bbox_inches="tight")
 path_axis.set_title(
     textwrap.fill(f"Home values around data center events ({EVENT_OF_INTEREST.name.replace('_', ' ').lower()})", width=35),
     loc="center", color=INK, fontsize=24, fontweight='bold',
 )
-plt.savefig(img_dir / (EOI_PREFIX + 'charts_with_background.png'))
+plt.savefig(viz_dir / "charts" / (EOI_PREFIX + 'charts_with_background.png'))
